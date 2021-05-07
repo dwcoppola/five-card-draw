@@ -1,12 +1,12 @@
 class Game {
     constructor() {
-        this.suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'],
+        this.suits = ['9825', '9826', '9827', '9824'],
         this.characters = ['A', 'K', 'Q', 'J', '10', '9', '8', '7', '6', '5', '4', '3', '2'],
         this.deck = function() {
             let output = [];
             for (let suit of this.suits) {
                 for (let char of this.characters) {
-                    output.push(`${char} of ${suit}`);
+                    output.push(`${char}&#${suit}`);
                 }
             }
             return output;
@@ -14,7 +14,6 @@ class Game {
         this.dealt = [],
         this.computerHand = [],
         this.playerHand = []
-
     }
 
     deal = () => {
@@ -49,18 +48,30 @@ class Game {
                 this.computerHand.push(this.dealt[i]) 
             }
         }
-        
+
+        for (let card of this.playerHand) {
+            let ph = document.getElementById('player-hand');
+            ph.innerHTML += `
+            <div id="${this.playerHand.indexOf(card)}" class="card">
+                <label>${card}</label>
+            </div>    
+            `
+        }
+
         return {'player': this.playerHand, 'computer': this.computerHand}
     }
 
     reDeal = (list) => {
+        const ph = document.getElementById('player-hand');
 
         for (let i = 4; i > -1; i--) {
+            
             if (list.includes(Number(i))) {
-            this.playerHand.splice(Number(i), 1)
+                this.playerHand.splice(Number(i), 1);
+                let card = document.getElementById(`${list}`);
+                ph.removeChild(card)
             }
         }
-
 
         while (this.playerHand.length < 5) {
             let choice = this.deck()[Math.floor(Math.random() * 52)];
@@ -68,6 +79,17 @@ class Game {
                 this.dealt.push(choice);
                 this.playerHand.push(choice);
             } 
+        }
+
+        removeAllChildren(ph);
+
+        for (let card of this.playerHand) {
+            let ph = document.getElementById('player-hand');
+            ph.innerHTML += `
+            <div id="${this.playerHand.indexOf(card)}" class="card">
+                <label>${card}</label>
+            </div>    
+            `
         }
 
         return this.playerHand;
@@ -83,3 +105,11 @@ class Game {
     }
 
 }  
+
+removeAllChildren = (parent) => {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
+
+game = new Game()

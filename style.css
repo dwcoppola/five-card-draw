@@ -1,0 +1,15 @@
+#player-hand
+{
+    width: 250px;
+    display: flex;
+    margin-right: auto;
+    margin-left: auto;
+}
+.card
+{
+    border: 1px solid gray;
+    color: gray;
+    background-color: rgb(248, 240, 240);
+    width: 50px;
+    height: 75px;
+}
